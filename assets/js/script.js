@@ -4,6 +4,14 @@ const remove = document.querySelectorAll("a");
 let books;
 const cart = document.getElementById("cart");
 const ul = document.getElementById("cartUl");
+let storageBooks = JSON.parse(localStorage.getItem("book")) || [];
+
+document.addEventListener("load", init());
+
+function init() {
+    getData();
+    createCart2(); 
+}
 
 async function getData() {
     await fetch(url).then((response) => {
@@ -15,8 +23,6 @@ async function getData() {
         console.log(error);
     });
 }
-
-getData();
 
 function createCards() {
     for (let i = 0; i < books.length; i++) {
@@ -50,14 +56,22 @@ function createCart() {
     const buy = document.querySelectorAll(".buy");
     for (let i = 0; i < books.length; i++) {
         buy[i].addEventListener("click", function () {
-            localStorage.setItem(`title${i}`, `${books[i].title}`);
-            localStorage.setItem(`price${i}`, `${books[i].price}`);
+            storageBooks.push({
+                title: books[i].title,
+                price: books[i].price
+            }); 
+            createCart2();
+            localStorage.setItem("book", JSON.stringify(storageBooks));
         });
     };
-    for (let i = 0; i < localStorage.lenght; i++) {
+}
+
+function createCart2() {
+    ul.innerText = "";
+    for (let j = 0; j < storageBooks.length; j++) {
         let li = document.createElement("li");
         let btnCart = document.createElement("button");
-        li.innerText = `${localStorage.getItem("title")}, ${localStorage.getItem("price")}€`;
+        li.innerText = `${storageBooks[j].title}, ${storageBooks[j].price}€`;
         btnCart.innerHTML = "❌";
         btnCart.addEventListener("click", function () { });
         li.appendChild(btnCart);
