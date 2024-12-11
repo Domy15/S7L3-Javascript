@@ -73,7 +73,7 @@ function createCart2() {
         let btnCart = document.createElement("button");
         li.innerText = `${storageBooks[j].title}, ${storageBooks[j].price}€`;
         btnCart.innerHTML = "❌";
-        btnCart.addEventListener("click", function() {storageBooks.splice(j,1); createCart2();});
+        btnCart.addEventListener("click", function() {storageBooks.splice(j,1);localStorage.setItem("book", JSON.stringify(storageBooks));createCart2();});
         li.appendChild(btnCart);
         ul.appendChild(li);
     };
